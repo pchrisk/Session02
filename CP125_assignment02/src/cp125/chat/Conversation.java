@@ -18,12 +18,18 @@ public class Conversation {
 		this.u2 = u2;
 		this.startTime = startTime;
 	}
+	
+	Date getStartTime() {
+		return startTime;
+	}
 
 	public void setEndTime( Date endTime ) {
 		this.endTime = endTime;
 	}
 
 	public void save( File f ) throws IOException {
+		System.out.println("Your chat session file can be found here: ");
+		System.out.println(f.getPath());
 	}
 
 	public static Conversation load( File f ) throws IOException {
