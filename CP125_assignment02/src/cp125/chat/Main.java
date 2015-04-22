@@ -21,6 +21,9 @@ public class Main {
 		  user logged in and use that string for all three fields
 		*/
 		User u = null;
+		
+		String userName = System.getProperty("user.name");
+		u = new User(userName, userName, "user");		
 
 		boolean save = true;
 		try {
