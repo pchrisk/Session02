@@ -58,8 +58,20 @@ public class Conversation {
 	 */
 	public static Conversation load( File f, Map<String,User> users )
 		throws IOException, IllegalArgumentException {
+		
+		System.out.println("Conversation: " + f.getName());
+		
+		FileReader source = new FileReader( f );
+		BufferedReader filter = new BufferedReader( source );
+		try {
+		String line = filter.readLine();
+		System.out.println( line );
+		} catch( IOException ioe ) {
+		// recover
+		}
 
 		// EXPAND
+		filter.close();
 		return null;
 	}
 	

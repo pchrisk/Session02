@@ -33,6 +33,15 @@ public class ConversationsReader {
 	 */
 	static public Conversation loadAll( File dir, Map<String,User> users )
 		throws IOException, IllegalArgumentException {
+		
+//		File dir = new File( "." );
+		File[] fs = dir.listFiles();
+		for( File f : fs ) {
+			System.out.println( f.getPath() );
+			Conversation.load(f, users);
+		// static and public, so reuse!
+//		cp125.IO_1.FileInfo.info( f );
+		}
 
 		/*
 		  TO EXPAND:
