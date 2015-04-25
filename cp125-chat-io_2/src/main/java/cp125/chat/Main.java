@@ -43,13 +43,24 @@ public class Main {
 		try {
 			Conversation c = ConversationsReader.loadAll( dir, Users.ALL );
 			if( c != null ) {
-				System.out.println( "User1: \t\t" + c.getUser1().getId() );
-				System.out.println( "User2: \t\t" + c.getUser2().getId() );
-				System.out.println( "Duration: \t" + c.getDuration() );
+				User u1 = c.getUser1();
+				User u2 = c.getUser2();
+				System.out.println( "User1: \t\t" + u1.getId() + "; " + u1.getFirstName() + " " + u1.getLastName() );
+				System.out.println( "User2: \t\t" + u2.getId() + "; " + u2.getFirstName() + " " + u2.getLastName() );
+				System.out.println( "Duration: \t" + c.getDuration() + " or " + convertMilliToHMmSsMs(c.getDuration()));
 			}
 		} catch( IOException ioe ) {
 			System.err.println( ioe );
 		}
+	}
+	
+	public static String convertMilliToHMmSsMs(long millisec) {
+	    long ms = millisec % 1000;
+	    long seconds = millisec / 1000;
+		long s = seconds % 60;
+	    long m = (seconds / 60) % 60;
+	    long h = (seconds / (60 * 60)) % 24;
+	    return String.format("%d:%02d:%02d:%03d", h,m,s,ms);
 	}
 }
 
