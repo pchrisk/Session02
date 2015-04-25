@@ -59,20 +59,37 @@ public class Conversation {
 	public static Conversation load( File f, Map<String,User> users )
 		throws IOException, IllegalArgumentException {
 		
-		System.out.println("Conversation: " + f.getName());
+		Conversation c = null;
+		
+//		System.out.println("Conversation: " + f.getName());
 		
 		FileReader source = new FileReader( f );
 		BufferedReader filter = new BufferedReader( source );
 		try {
 		String line = filter.readLine();
-		System.out.println( line );
+		if (line != null) {
+			String lineparts[] = line.split(DELIMITER);
+			if (lineparts.length == 4) {
+				String id1 = lineparts[0];
+				String id2 = lineparts[1];
+				Date stime = new Date(Long.parseLong(lineparts[2]));
+				Date etime = new Date(Long.parseLong(lineparts[3]));
+				
+				c = new Conversation(users.get(id1), users.get(id2), stime, etime);				
+			} else {
+				filter.close();
+				return null;
+			}
+		}
+		
 		} catch( IOException ioe ) {
+			System.out.println(ioe);
 		// recover
 		}
 
 		// EXPAND
 		filter.close();
-		return null;
+		return c;
 	}
 	
 	private final User u1, u2;

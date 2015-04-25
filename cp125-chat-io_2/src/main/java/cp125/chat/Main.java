@@ -2,6 +2,8 @@ package cp125.chat;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Date;
 
 /**
  * The entry point into this week's chat conversation analysis
@@ -41,9 +43,9 @@ public class Main {
 		try {
 			Conversation c = ConversationsReader.loadAll( dir, Users.ALL );
 			if( c != null ) {
-				System.out.println( "User1: " + c.getUser1().getId() );
-				System.out.println( "User2: " + c.getUser2().getId() );
-				System.out.println( "User3: " + c.getDuration() );
+				System.out.println( "User1: \t\t" + c.getUser1().getId() );
+				System.out.println( "User2: \t\t" + c.getUser2().getId() );
+				System.out.println( "Duration: \t" + c.getDuration() );
 			}
 		} catch( IOException ioe ) {
 			System.err.println( ioe );
