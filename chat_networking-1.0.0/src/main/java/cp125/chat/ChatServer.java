@@ -216,6 +216,28 @@ public class ChatServer {
 	private void chat() throws IOException {
 		pw1.println( "SUCCESS: Connected to " + id2 + ". You talk second" );
 		pw2.println( "SUCCESS: Connected to " + id1 + ". You talk first" );
+		String line = null;
+		try {
+			for(;;) {
+				pw2.println();
+				line = br2.readLine();
+				if (line == null) {
+					break;
+				}
+				System.out.println(id1 + " said: " + line);
+				pw1.println(id2+ ": " + line);
+
+				line = br1.readLine();
+				if (line == null) {
+					break;
+				}
+				System.out.println(id2 + " said: " + line);
+				pw2.println(id1 + ": " + line);
+			}
+
+		} catch (IOException ioe) {
+			System.err.println(ioe);
+		}
 
 		// EXPAND
 	}

@@ -118,6 +118,7 @@ public class ChatClient {
 
 		String id = DEFAULTID;
 		if( cl.hasOption( "i" ) ) {
+			System.out.println(cl.getOptionValue("i"));
 			id = cl.getOptionValue( "i" );
 		}
 		
@@ -166,6 +167,7 @@ public class ChatClient {
 			PrintWriter pw = Utils.getWriter( s );
 
 			// First line to server announces our identity
+			System.out.println("ID " + id);
 			pw.println( "ID " + id );
 
 			/*
