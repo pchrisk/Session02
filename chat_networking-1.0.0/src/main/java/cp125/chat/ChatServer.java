@@ -88,7 +88,6 @@ public class ChatServer {
 		try {
 			while( true ) {
 				getListener();
-				System.out.println("after getListner");
 				getConnector();
 				System.out.println( id1 + " <--> " + id2 );
 				chat();
@@ -122,32 +121,34 @@ public class ChatServer {
 	*/
 	private void getListener() throws IOException {
 		
-		try {
+		while(true){
 			s1 = ss.accept();
 			System.out.println( "Connected: " + s1 );
 			br1 = Utils.getReader( s1 );
 			pw1 = Utils.getWriter( s1 );
 			String line = br1.readLine();
-			System.out.println(line);
+			
 			if (line != null) {
 				String lineparts[] = line.split(DELIMITER);
 				if (lineparts.length == 2) {
+					System.out.println(line);
 					id1 = lineparts[1];
 				}
 			}
 			line = br1.readLine();
 			if (line != null) {
 				String lineparts[] = line.split(DELIMITER);
-				if (lineparts.length == 1) {
+				if (lineparts[0].equalsIgnoreCase("LISTEN")) {
 					System.out.println(lineparts[0]);
-					
+					break;
 				} else {
-					
+					pw1.println("FAILURE-looking for the word LISTEN.");
+					pw1.close();
+					br1.close();
+					s1.close();
 				}
 			}
 			
-		} catch( IOException ioe ) {
-			System.err.println( ioe );
 		}
 		// EXPAND
 	}
@@ -176,33 +177,41 @@ public class ChatServer {
 	*/
 	private void getConnector() throws IOException {
 		
-		try {
+		while(true) {
 			s2 = ss.accept();
 			System.out.println( "Connected: " + s2 );
 			br2 = Utils.getReader( s2 );
 			pw2 = Utils.getWriter( s2 );
 			String line = br2.readLine();
-			System.out.println(line);
+			
 			if (line != null) {
 				String lineparts[] = line.split(DELIMITER);
 				if (lineparts.length == 2) {
 					id2 = lineparts[1];
+					System.out.println(line);
 				}
 			}
 			line = br2.readLine();
 			if (line != null) {
 				String lineparts[] = line.split(DELIMITER);
-				System.out.println(line);
-				if (lineparts.length == 1) {
-					System.out.println(lineparts[0]);
-					
+//				System.out.println(line);
+				if (lineparts[0].equalsIgnoreCase("LISTEN")) {
+					pw2.println("FAILURE- Listener established, it is " + id1);
+					pw2.close();
+					br2.close();
+					s2.close();
+				} else if (lineparts[1].equals(id1)) {
+					System.out.println(line);
+					break;
 				} else {
-					System.out.println(lineparts[1]);
+					pw2.println("FAILURE-" + lineparts[1] + " is not the listener, " + id1 + " is.");
+					
+					pw2.close();
+					br2.close();
+					s2.close();
 				}
 			}
 			
-		} catch( IOException ioe ) {
-			System.err.println( ioe );
 		}
 		// EXPAND
 	}
@@ -214,24 +223,27 @@ public class ChatServer {
 	  in getConnector(), speaks first.
 	*/
 	private void chat() throws IOException {
-		pw1.println( "SUCCESS: Connected to " + id2 + ". You talk second" );
-		pw2.println( "SUCCESS: Connected to " + id1 + ". You talk first" );
+		pw1.println( "SUCCESS: " + id1 + " you are connected to " + id2 + ". You talk second. Type 'bye' to quit." );
+		pw2.println( "SUCCESS: " + id2 + " you are connected to " + id1 + ". You talk first. Type 'bye' to quit." );
 		String line = null;
 		try {
-			for(;;) {
-				pw2.println();
+			while(true) {
 				line = br2.readLine();
-				if (line == null) {
-					break;
-				}
-				System.out.println(id1 + " said: " + line);
-				pw1.println(id2+ ": " + line);
-
-				line = br1.readLine();
-				if (line == null) {
+				if ((line == null) || (line == "") || (line.equalsIgnoreCase("bye"))) {
+					System.out.println(id2 + " has ended the chat.");
+					pw1.println( id2 + " has ended the chat.");
 					break;
 				}
 				System.out.println(id2 + " said: " + line);
+				pw1.println(id2+ ": " + line);
+
+				line = br1.readLine();
+				if ((line == null) || (line == "") || (line.equalsIgnoreCase("bye"))) {
+					System.out.println(id1 + " has ended the chat.");
+					pw2.println( id1 + " has ended the chat.");
+					break;
+				}
+				System.out.println(id1 + " said: " + line);
 				pw2.println(id1 + ": " + line);
 			}
 

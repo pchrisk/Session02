@@ -118,7 +118,6 @@ public class ChatClient {
 
 		String id = DEFAULTID;
 		if( cl.hasOption( "i" ) ) {
-			System.out.println(cl.getOptionValue("i"));
 			id = cl.getOptionValue( "i" );
 		}
 		
