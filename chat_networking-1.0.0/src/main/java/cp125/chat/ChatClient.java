@@ -159,73 +159,137 @@ public class ChatClient {
 	}
 
 	public void start() {
-		try {
-			Socket s = new Socket( serverHost, serverPort );
-			System.out.println( "Connected to: " + s );
-			BufferedReader br = Utils.getReader( s );
-			PrintWriter pw = Utils.getWriter( s );
 
-			// First line to server announces our identity
-			System.out.println("ID " + id);
-			pw.println( "ID " + id );
+//		Runnable chat = new Runnable() {
 
-			/*
-			  Second line to server says whether we want to listen
-			  for someone to chat to us, or whether we actively want
-			  to chat with some named peer
+//			public void run() {
+				try {
+					// TODO Auto-generated method stub
+					Socket s = new Socket(serverHost, serverPort);
+					System.out.println("Connected to: " + s);
+					final BufferedReader br = Utils.getReader(s);
+					final PrintWriter pw = Utils.getWriter(s);
 
-			  NB: The term 'listen' here is NOT the same as a
-			  serverSocket listening on a port.  We are a client
-			  program, making active SOCKET connections to a server.
-			  We may listen in a CHAT sense though.
-			*/
-			if( chatPeer == null )
-				pw.println( "LISTEN" );
-			else
-				pw.println( "CHAT " + chatPeer );
+					// First line to server announces our identity
+					System.out.println("ID " + id);
+					pw.println("ID " + id);
 
-			/*
-			  Next, read a response from the server.  It will
-			  start with SUCCESS or FAILURE
-			*/
-			String line = br.readLine();
-			System.out.println( "Server: " + line );
-			if( line.startsWith( "FAILURE" ) )
-				return;
+					/*
+					 * Second line to server says whether we want to listen for
+					 * someone to chat to us, or whether we actively want to
+					 * chat with some named peer
+					 * 
+					 * NB: The term 'listen' here is NOT the same as a
+					 * serverSocket listening on a port. We are a client
+					 * program, making active SOCKET connections to a server. We
+					 * may listen in a CHAT sense though.
+					 */
+					if (chatPeer == null)
+						pw.println("LISTEN");
+					else
+						pw.println("CHAT " + chatPeer);
 
-			/*
-			  OK, we got a successful chat going.
-			  Get our chat content from keyboard+screen 
-			*/
-			BufferedReader brLocal = Utils.getReader( System.in );
-			PrintWriter pwLocal = Utils.getWriter( System.out );
+					/*
+					 * Next, read a response from the server. It will start with
+					 * SUCCESS or FAILURE
+					 */
+					String line = br.readLine();
+					System.out.println("Server: " + line);
+					if (line.startsWith("FAILURE"))
+						return;
 
-			line = null;
-			/*
-			  If we were the initiator of the chat, i.e. we NAMED some
-			  peer we wanted to talk to, we speak first.  After that,
-			  each user speaks in turn.  If we ever see a null, either
-			  from socket or keyboard, we bail.
-			*/
-			if( chatPeer != null ) {
-				line = brLocal.readLine();
-				if( line == null )
-					return;
-				pw.println( line );
-			}
-			while( true ) {
-				line = br.readLine();
-				if( line == null )
-					break;
-				pwLocal.println( line );
-				line = brLocal.readLine();
-				if( line == null )
-					break;
-				pw.println( line );
-			}
-		} catch( IOException ioe ) {
-			System.err.println( ioe );
-		}
+					/*
+					 * OK, we got a successful chat going. Get our chat content
+					 * from keyboard+screen
+					 */
+					final BufferedReader brLocal = Utils.getReader(System.in);
+					final PrintWriter pwLocal = Utils.getWriter(System.out);
+
+					line = null;
+					/*
+					 * If we were the initiator of the chat, i.e. we NAMED some
+					 * peer we wanted to talk to, we speak first. After that,
+					 * each user speaks in turn. If we ever see a null, either
+					 * from socket or keyboard, we bail.
+					 */
+					if (chatPeer != null) {
+						line = brLocal.readLine();
+						if (line == null)
+							return;
+						pw.println(line);
+					}
+					
+					Runnable remote = new Runnable(){
+
+						public void run() {
+							// TODO Auto-generated method stub
+							while (true) {
+								String line;
+								try {
+									line = br.readLine();
+									if (line == null)
+										break;
+									pwLocal.println(line);
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								
+								
+							}
+							
+						}
+						
+					};
+					
+					Runnable local = new Runnable(){
+
+						public void run() {
+							// TODO Auto-generated method stub
+							while (true) {
+								
+								String line;
+								try {
+									line = brLocal.readLine();
+									if (line == null)
+										break;
+									pw.println(line);
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								
+							}
+							
+						}
+						
+					};
+					
+					Thread t1 = new Thread(remote);
+					Thread t2 = new Thread(local);
+					
+					t1.start();
+					t2.start();
+					
+					
+//					while (true) {
+//						line = br.readLine();
+//						if (line == null)
+//							break;
+//						pwLocal.println(line);
+//						line = brLocal.readLine();
+//						if (line == null)
+//							break;
+//						pw.println(line);
+//					}
+
+				} catch (IOException ioe) {
+					System.err.println(ioe);
+				}
+//			}
+//		};
+//		Thread t1 = new Thread(chat);
+//		t1.start();
 	}
 	
 	static void printUsage( String usage, Options os ) {
