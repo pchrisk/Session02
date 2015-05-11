@@ -225,33 +225,100 @@ public class ChatServer {
 	private void chat() throws IOException {
 		pw1.println( "SUCCESS: " + id1 + " you are connected to " + id2 + ". You talk second. Type 'bye' to quit." );
 		pw2.println( "SUCCESS: " + id2 + " you are connected to " + id1 + ". You talk first. Type 'bye' to quit." );
-		String line = null;
-		try {
-			while(true) {
-				line = br2.readLine();
-				if ((line == null) || (line == "") || (line.equalsIgnoreCase("bye"))) {
-					System.out.println(id2 + " has ended the chat.");
-					pw1.println( id2 + " has ended the chat.");
-					break;
-				}
-				System.out.println(id2 + " said: " + line);
-				pw1.println(id2+ ": " + line);
+//		String line = null;
+				
+		Runnable chat1 = new Runnable() {
 
-				line = br1.readLine();
-				if ((line == null) || (line == "") || (line.equalsIgnoreCase("bye"))) {
-					System.out.println(id1 + " has ended the chat.");
-					pw2.println( id1 + " has ended the chat.");
-					break;
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					while(true) {
+						String line = br1.readLine();
+						if ((line == null) || (line == "") || (line.equalsIgnoreCase("bye"))) {
+							System.out.println(id1 + " has ended the chat.");
+							pw2.println( id1 + " has ended the chat.");
+							break;
+						}
+						System.out.println(id1 + " said: " + line);
+						pw2.println(id1 + ": " + line);
+					}
+
+				} catch (IOException ioe) {
+					System.err.println(ioe);
 				}
-				System.out.println(id1 + " said: " + line);
-				pw2.println(id1 + ": " + line);
+
+				// EXPAND
+			}		
+		};
+		
+		Runnable chat2 = new Runnable() {
+
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					while(true) {
+						String line = br2.readLine();
+						if ((line == null) || (line == "") || (line.equalsIgnoreCase("bye"))) {
+							System.out.println(id2 + " has ended the chat.");
+							pw1.println( id2 + " has ended the chat.");
+							break;
+						}
+						System.out.println(id2 + " said: " + line);
+						pw1.println(id2+ ": " + line);
+
+						
+					}
+
+				} catch (IOException ioe) {
+					System.err.println(ioe);
+				}
+
+				// EXPAND
 			}
-
-		} catch (IOException ioe) {
-			System.err.println(ioe);
+			
+		};
+		Thread t1 = new Thread(chat1);
+		Thread t2 = new Thread(chat2);
+		
+		t1.start();
+		t2.start();
+		try {
+//			t1.join();
+			t2.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
-		// EXPAND
+		
+		
+		
+		
+//		try {
+//			while(true) {
+//				line = br2.readLine();
+//				if ((line == null) || (line == "") || (line.equalsIgnoreCase("bye"))) {
+//					System.out.println(id2 + " has ended the chat.");
+//					pw1.println( id2 + " has ended the chat.");
+//					break;
+//				}
+//				System.out.println(id2 + " said: " + line);
+//				pw1.println(id2+ ": " + line);
+//
+//				line = br1.readLine();
+//				if ((line == null) || (line == "") || (line.equalsIgnoreCase("bye"))) {
+//					System.out.println(id1 + " has ended the chat.");
+//					pw2.println( id1 + " has ended the chat.");
+//					break;
+//				}
+//				System.out.println(id1 + " said: " + line);
+//				pw2.println(id1 + ": " + line);
+//			}
+//
+//		} catch (IOException ioe) {
+//			System.err.println(ioe);
+//		}
+//
+//		// EXPAND
 	}
 
 	private void cleanUp() throws IOException {
