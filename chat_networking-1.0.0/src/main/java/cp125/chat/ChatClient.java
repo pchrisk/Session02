@@ -165,7 +165,7 @@ public class ChatClient {
 //			public void run() {
 				try {
 					// TODO Auto-generated method stub
-					Socket s = new Socket(serverHost, serverPort);
+					final Socket s = new Socket(serverHost, serverPort);
 					System.out.println("Connected to: " + s);
 					final BufferedReader br = Utils.getReader(s);
 					final PrintWriter pw = Utils.getWriter(s);
@@ -212,27 +212,32 @@ public class ChatClient {
 					 * each user speaks in turn. If we ever see a null, either
 					 * from socket or keyboard, we bail.
 					 */
-					if (chatPeer != null) {
-						line = brLocal.readLine();
-						if (line == null)
-							return;
-						pw.println(line);
-					}
+//					if (chatPeer != null) {
+//						line = brLocal.readLine();
+//						if (line == null)
+//							return;
+//						pw.println(line);
+//					}
 					
 					Runnable remote = new Runnable(){
 
 						public void run() {
 							// TODO Auto-generated method stub
 							while (true) {
-								String line;
 								try {
-									line = br.readLine();
-									if (line == null)
+									String line = br.readLine();
+									if ((line == null) || line.startsWith("ENDED:")) {
+										pwLocal.println(line);
+										br.close();
+										pwLocal.close();
+										s.close();
 										break;
+									}
 									pwLocal.println(line);
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
+									break;
 								}
 								
 								
@@ -247,16 +252,24 @@ public class ChatClient {
 						public void run() {
 							// TODO Auto-generated method stub
 							while (true) {
-								
-								String line;
 								try {
-									line = brLocal.readLine();
-									if (line == null)
+									String line = brLocal.readLine();
+
+									if ((line == null) || (line.equalsIgnoreCase("bye"))) {
+										pw.println(line);
+										pw.close();
+										pwLocal.close();
+										s.close();
+//										System.exit(0);
 										break;
+									}	
+
 									pw.println(line);
+									
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
+									break;
 								}
 								
 							}
@@ -290,8 +303,11 @@ public class ChatClient {
 //		};
 //		Thread t1 = new Thread(chat);
 //		t1.start();
+				
+			
 	}
 	
+
 	static void printUsage( String usage, Options os ) {
 		HelpFormatter hf = new HelpFormatter();
 		hf.setWidth( 80 );
