@@ -160,11 +160,7 @@ public class ChatClient {
 
 	public void start() {
 
-//		Runnable chat = new Runnable() {
-
-//			public void run() {
 				try {
-					// TODO Auto-generated method stub
 					final Socket s = new Socket(serverHost, serverPort);
 					System.out.println("Connected to: " + s);
 					final BufferedReader br = Utils.getReader(s);
@@ -220,13 +216,11 @@ public class ChatClient {
 //					}
 					
 					Runnable remote = new Runnable(){
-
 						public void run() {
-							// TODO Auto-generated method stub
 							while (true) {
 								try {
 									String line = br.readLine();
-									if ((line == null) || line.startsWith("ENDED:")) {
+									if ((line == null) || line.equalsIgnoreCase("bye")) {
 										pwLocal.println(line);
 										br.close();
 										pwLocal.close();
@@ -235,76 +229,44 @@ public class ChatClient {
 									}
 									pwLocal.println(line);
 								} catch (IOException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 									break;
 								}
-								
-								
 							}
-							
 						}
-						
 					};
 					
 					Runnable local = new Runnable(){
-
 						public void run() {
-							// TODO Auto-generated method stub
 							while (true) {
 								try {
 									String line = brLocal.readLine();
-
 									if ((line == null) || (line.equalsIgnoreCase("bye"))) {
 										pw.println(line);
 										pw.close();
 										pwLocal.close();
 										s.close();
-//										System.exit(0);
+										System.exit(0);
 										break;
-									}	
-
+									}
 									pw.println(line);
-									
 								} catch (IOException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 									break;
 								}
-								
 							}
-							
 						}
-						
 					};
 					
-					Thread t1 = new Thread(remote);
-					Thread t2 = new Thread(local);
+					Thread t1 = new Thread(remote, "Remote");
+					Thread t2 = new Thread(local, "Local");
 					
 					t1.start();
 					t2.start();
-					
-					
-//					while (true) {
-//						line = br.readLine();
-//						if (line == null)
-//							break;
-//						pwLocal.println(line);
-//						line = brLocal.readLine();
-//						if (line == null)
-//							break;
-//						pw.println(line);
-//					}
 
 				} catch (IOException ioe) {
 					System.err.println(ioe);
 				}
-//			}
-//		};
-//		Thread t1 = new Thread(chat);
-//		t1.start();
-				
-			
 	}
 	
 
