@@ -1,0 +1,20 @@
+Bill: Hi Ben, how are you?
+Ben: Good.  This chat program is neat.
+Bill: Yes, written in Java you know.
+Ben: Java, what's that?
+Bill: A really good computer programming language, better than Python.
+Ben: Oh right. 
+Bill: You know, I think we're being recorded.
+Ben: We are?  Why?
+Bill: Probably for some kind of homework assignment.
+Ben: What's the assignment about?
+Bill: Not sure, maybe Collections.
+Ben: Collections?  You mean data structures?
+Bill: Yes, they call them Collections in Java. They're generic you know.
+Ben: Generic?  That's those funny angle brackets, isn't it?
+Bill: That's them. Beats treating everything as plain objects.
+Ben: OK. So, about the assignment.  What's involved?
+Bill: I bet it's some kind of word count, so let's say funny things.
+Ben: OK, blah bah blah blah blah blah!
+Bill: This a goofy word cbsdsjhcjksbckbksdbjkbjsbdkjbsdskjbkjdbkbk
+Ben: OK, I've had enough, the Sounders are on TV, bye.
