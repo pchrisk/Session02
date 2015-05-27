@@ -10,6 +10,7 @@ import java.io.LineNumberReader;
 import java.io.File;
 import java.io.FileReader;
 
+
 /**
  * @author Stuart Maclean.
  *
@@ -51,10 +52,13 @@ public class TranscriptProcessing {
 		System.out.println();
 		System.out.println( "Ben:" );
 		System.out.println( allWordsBen );
+		System.out.println();
 
 		// sort the data and identify longest and shortest words said...
 		sorting( "Bill", allWordsBill );
+		System.out.println();
 		sorting( "Ben", allWordsBen );
+		System.out.println();
 
 		// search the data for particular words said...
 		String[] didBillSay = { "written", "brackets", "count", "Python" };
@@ -66,12 +70,34 @@ public class TranscriptProcessing {
 	static void sorting( String who, List<String> words ) {
 
 		// FILL THIS IN
-
+		
 		String longest = ""; 
 		String shortest = "";
+		
+		Collections.sort(words, ASCEND);
+		System.out.println("sorted: " + words);
+		
+		
+//		ArrayList<String> wordList = new ArrayList<String>(words);
+		longest = words.get(words.size()-1);
+		shortest = words.get(0);
+		
 		System.out.println( who + " longest  word = " + longest );
 		System.out.println( who + " shortest word = " + shortest );
+		
+		
+		
 	}
+	
+	static final Comparator<String> ASCEND = new Comparator<String>() {
+		public int compare( String w1, String w2 ) {
+			if( w1.length() < w2.length() )
+				return -1;
+			if( w2.length() < w1.length() )
+				return 1;
+			return 0;
+		}
+	};
 
 	static void searching( String who, List<String> words,
 						   String[] needles ) {
@@ -86,8 +112,24 @@ public class TranscriptProcessing {
 		*/
 
 		// FILL THIS IN such that we can say, for all supplied needles:
+		
+		String tf = "true";
+		Collections.sort(words);
+		
+		for (int i = 0; i < needles.length; i++) {
+//			System.out.println(needles[i]);
+			int j = Collections.binarySearch(words, needles[i]);
+			if (j < 1) {
+				tf = "false";
+			} else {
+				tf = "true";
+			}
+			System.out.println( who + " said " + needles[i] + ": " + tf );
+		}
+		
+		
 
-		System.out.println( who + " said 'needle': true/false" );
+//		System.out.println( who + " said 'needle': true/false" );
 	}
 
 	

@@ -1,0 +1,30 @@
+Class Object defines an instance method int hashCode(). How many distinct hash
+codes could there be, for all objects which could possibly be created by all Java programs?
+
+2 to the 32nd, or 4,294,967,296 int values
+
+• In theory, the number of objects that could be created by all Java programs is bigger
+than the number above. Therefore, some objects must hash to the same value. What
+do we call this scenario?
+
+Colissions
+
+• We assume that A.equals(B) is expensive to compute but that A.hashCode() is
+cheaper. Given this, why are hash tables better than say array-based lists for a program that performs many data ’lookups’ (i.e. Map.get)? Recall that the goal is to
+minimize the number of equals checks.
+
+In general, there should be one use for each hashcode, therefore, once it is used it can be lookedup quickly and easily. As opposed to a list, where you would have to iterate through the list to find something.
+
+• If I implement some class C and override Object.equals(Object), what other instance
+method must I override also?
+
+c.hashCode();
+
+
+
+
+• If I have a class D and implement its hashCode method to always return a constant
+number, say 15, what can you say about the performance of a hash table containing
+objects of this class?
+
+It will degrade to that of a list.
