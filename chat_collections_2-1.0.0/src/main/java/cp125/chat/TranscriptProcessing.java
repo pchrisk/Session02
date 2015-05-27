@@ -74,7 +74,7 @@ public class TranscriptProcessing {
 		String longest = ""; 
 		String shortest = "";
 		
-		Collections.sort(words, ASCEND);
+		Collections.sort(words, WSIZE);
 		System.out.println("sorted: " + words);
 		
 		
@@ -89,7 +89,7 @@ public class TranscriptProcessing {
 		
 	}
 	
-	static final Comparator<String> ASCEND = new Comparator<String>() {
+	static final Comparator<String> WSIZE = new Comparator<String>() {
 		public int compare( String w1, String w2 ) {
 			if( w1.length() < w2.length() )
 				return -1;
