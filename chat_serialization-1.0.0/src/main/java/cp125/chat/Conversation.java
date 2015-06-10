@@ -37,6 +37,13 @@ public class Conversation implements Serializable {
 		WhoWhatWhen www = new WhoWhatWhen( who, what, when );
 		transcript.add( www );
 	}
+	
+	public long duration() {
+		Date begin = transcript.get(0).when;
+		Date end = transcript.get(transcript.size()-1).when;
+		return (end.getTime() - begin.getTime());
+	}
+	
 
 	@Override
 	public String toString() {
@@ -70,6 +77,15 @@ public class Conversation implements Serializable {
 	}
 	
 	private final List<WhoWhatWhen> transcript;
+
+	/**
+	 * @return the transcript
+	 */
+	public List<WhoWhatWhen> getTranscript() {
+		return transcript;
+	}
+	
+	private static final long serialVersionUID = 4548487657115871250L;
 }
 
 // eof

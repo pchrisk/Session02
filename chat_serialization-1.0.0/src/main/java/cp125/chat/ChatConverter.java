@@ -40,6 +40,8 @@ public class ChatConverter {
 
 	static String ext = ".ser";
 	static String fname = null;
+	static long maxdur = 0;
+	static String maxcu = null;
 
 	static public void main(String[] unused) {
 		File pwd = new File(".");
@@ -77,10 +79,16 @@ public class ChatConverter {
 		for (File f : fs) {
 			System.out.println("Convert");
 			convert(f);
+			
 		}
+		System.out.println();
+		System.out.println(maxcu + " has the longest conversation. Lasting " + maxdur + " milliseconds.");
 	}
 
 	static void convert(File f) {
+		
+		long dur = 0;
+		
 		System.out.println("Converting " + f);
 		fname = f.getName().substring(0, f.getName().lastIndexOf("."));
 		System.out.println(fname);
@@ -90,24 +98,20 @@ public class ChatConverter {
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			Conversation cu = (Conversation)ois.readObject();
 			
-//			ArrayList<WhoWhatWhen> arr = (ArrayList<WhoWhatWhen>) ois.readObject();
-
-//			List<WhoWhatWhen> l = (ArrayList<WhoWhatWhen>) cu;
-//			for (WhoWhatWhen www : ) {
-//				System.out.println(www.when);
-//				
-//			}
-			System.out.println("CU printed" + cu);
+//			System.out.println(cu);
+			dur = cu.duration();
+			if(dur > maxdur) {
+				maxdur = dur;
+				maxcu = fname;
+			}
 			serialize(cu, fname);
+			
+			
 
 			
 			ois.close();
 
-			// // THESE THROWS HERE JUST TO MAKE THIS BUILDABLE, REMOVE
-			// if( true )
-			// throw new IOException();
-			// if( true )
-			// throw new ClassNotFoundException();
+			
 
 		} catch (IOException ioe) {
 			System.err.println(f + " " + ioe);
