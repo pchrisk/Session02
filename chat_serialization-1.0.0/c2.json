@@ -1,0 +1,67 @@
+{
+  "transcript": [
+    {
+      "who": {
+        "firstName": "William",
+        "lastName": "Windsor",
+        "id": "bill"
+      },
+      "what": "Hi Ben.",
+      "when": "Jun 3, 2015 11:23:22 AM"
+    },
+    {
+      "who": {
+        "firstName": "Benjamin",
+        "lastName": "Big",
+        "id": "ben"
+      },
+      "what": "Good evening, what's up?",
+      "when": "Jun 3, 2015 11:24:22 AM"
+    },
+    {
+      "who": {
+        "firstName": "William",
+        "lastName": "Windsor",
+        "id": "bill"
+      },
+      "what": "We're studying Java serialization.",
+      "when": "Jun 3, 2015 11:25:22 AM"
+    },
+    {
+      "who": {
+        "firstName": "Benjamin",
+        "lastName": "Big",
+        "id": "ben"
+      },
+      "what": "Never heard of it, explain more.",
+      "when": "Jun 3, 2015 11:26:22 AM"
+    },
+    {
+      "who": {
+        "firstName": "William",
+        "lastName": "Windsor",
+        "id": "bill"
+      },
+      "what": "You take objects and turn them into binary blobs or stuff like json strings.",
+      "when": "Jun 3, 2015 11:27:22 AM"
+    },
+    {
+      "who": {
+        "firstName": "Benjamin",
+        "lastName": "Big",
+        "id": "ben"
+      },
+      "what": "So you can send the data to other programs?",
+      "when": "Jun 3, 2015 11:28:22 AM"
+    },
+    {
+      "who": {
+        "firstName": "Benjamin",
+        "lastName": "Big",
+        "id": "ben"
+      },
+      "what": "Exactly, pretty cool I think.",
+      "when": "Jun 3, 2015 11:29:22 AM"
+    }
+  ]
+}
